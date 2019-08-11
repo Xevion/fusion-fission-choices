@@ -4,6 +4,10 @@
 
 `fusion-fission-choices` is a simple utility written in Python for identifying preferable elements to use for fusion with the Alchemistry Minecraft Mod.
 
+## Where is the Fission part?
+
+As of now, I have only implemented the fusion part, since it's drastically easier. The fission module for this will come later, if I decide I need it, but since the fission recipes come in JEI automatically... I'll be okay.
+
 ## Configuration Options
 
 The `elements` portion refers to the scores of each element, each being the atomic number of the element.
