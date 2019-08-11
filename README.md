@@ -10,6 +10,11 @@ I apologize if stuff is unclear or is just plain strange, I am not used to produ
 
 As of now, I have only implemented the fusion part, since it's drastically easier. The fission module for this will come later, if I decide I need it, but since the fission recipes come in JEI automatically... I'll be okay.
 
+## What modules does this repo require?
+
+The only non-standard module in this repo is the `mendeleev` module.
+Install via `pip install mendeleev`.
+
 ## To-do
 
 * Implement Fission
