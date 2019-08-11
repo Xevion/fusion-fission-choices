@@ -18,6 +18,15 @@ The `elements` portion refers to the scores of each element, each being the atom
 
 ---
 
+`reverseIndividualOrder` refers to whether or not the program should reverse the output of the lists so that individual list printouts should have elements with higher scores 
+
+---
+
+`reverseOrder` refers to the order in which the list of lists is sorted, `False` being longer lists at the top and `True` being shorter lists at the top, and vice-verse for the bottom.
+
+---
+
+
 `noNegatives` refers to whether it should filter out elements that have a negative score (ie. while using default configs, filter out elements without a score set)
 
 A set of elements with the score (-1, 5) would get filtered out, while a set with the scores (78, 12) would not.

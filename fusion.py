@@ -19,16 +19,20 @@ def formatting(e1, e2):
 def hasNegatives(item):
     return score(item[0]) < 0 or score(item[1]) < 0
 
+# get the element based on two letters or a digit and attempt to map it to a number
 def getElement(element):
     if re.match(r'\d+', element):
-        return mdv.element(int(element))
+        element = int(element)
+        if element >= 1 and element <= 118:
+            return mdv.element(element)
+        raise ValueError(f'Unknown Element Atomic Number \'{element}\'')
     elif re.match(r'\w{1,2}', element):
         try:
             return mdv.element(element.strip().title())
         except:
-            raise ValueError('Unknown Element \'{}\''.format(element))
+            raise ValueError(f'Unknown Element \'{element}\'')
     else:
-        raise ValueError('Unknown Element Format \'{}\''.format(element))
+        raise ValueError(f'Unknown Element Format \'{element}\'')
 
 def bestSelection(select):
     select = select.atomic_number
@@ -42,14 +46,20 @@ def bestSelection(select):
     # Filter out elements that do not meet the minimum/maximum set
     posi = list(filter(lambda item : scoreSum(item)[0] >= config['minimumScore'], posi))
     # Sort the elements by the sum of their scores
-    posi.sort(key=lambda item : scoreSum(item), reverse=not config['reverseSorting'])
-
+    posi.sort(key=lambda item : scoreSum(item), reverse=not config['reverseInnerOrder'])
+    # Build the strings
     string1 = '[Best Elements for Element {}, {}]'.format(select, mdv.element(select).name if config['fullPrint'] else mdv.element(select.symbol))
     string2 = '\n'.join([formatting(element1, element2) for element1, element2 in posi])
     return string1, string2 or '\t{No elements matched the configuration specified}'
 
-selection = input("Choose elements, delimited by whitespace and/or punctuation...\n")
-selection = [getElement(e) for e in selection.split()]
-print('\n\n'.join(
-    sorted(['{}\n{}'.format(*bestSelection(E)) for E in selection], key=lambda string : len(string.split('\n')))
-))
+# Driver code
+def main():
+    selection = input("Choose elements, delimited by whitespace and/or punctuation...\n")
+    selection = [getElement(e) for e in selection.split()]
+    print('\n\n'.join(
+        sorted(['{}\n{}'.format(*bestSelection(E)) for E in selection],
+        key=lambda string : len([line for line in string.split('\n') if
+        # hacky solution for reverseOrder config option
+        '\t{No elements matched the configuration specified}' not in line]),
+        reverse=not config['reverseOrder'])
+    ))
