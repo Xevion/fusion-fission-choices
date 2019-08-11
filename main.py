@@ -3,11 +3,11 @@ import os, sys, json, re, mendeleev as mdv
 path = os.path.join(sys.path[0], 'config.json')
 config = json.load(open(path, 'r'))
 
-def score(item):
-    return config['elements'][str(item[0])] + config['elements'][str(item[1])], item
+def score(element):
+    return config['elements'][str(element)]
 
-def arrange(item):
-    return (max(item), min(item))
+def scoreSum(item):
+    return (score(item[0]) + score(item[1])), item
 
 def formatting(e1, e2):
     e1, e2 = mdv.element(e1), mdv.element(e2)
@@ -15,6 +15,9 @@ def formatting(e1, e2):
                                         e1.atomic_number,
                                         e2.symbol if not config['fullPrint'] else e2.name,
                                         e2.atomic_number)
+
+def hasNegatives(item):
+    return score(item[0]) < 0 or score(item[1]) < 0
 
 def getElement(element):
     if re.match(r'\d+', element):
@@ -29,11 +32,17 @@ def getElement(element):
 
 def bestSelection(select):
     select = select.atomic_number
+    # Create a set, rearrange by (larger, smaller), then remove duplicates
     posi = [(x, select - x) for x in range(1, select)]
-    posi = list(map(arrange, posi))
-    posi = list(set(posi))
-    posi = list(filter(lambda item : score(item)[0] >= config['minimumScore'], posi))
-    posi.sort(key=lambda item : score(item), reverse=not config['reverseSorting'])
+    posi = list(map(lambda item : (max(item), min(item)), posi))
+    posi = list(dict.fromkeys(posi))
+    # Filter out element tuples that don't have both with scores
+    if config['noNegatives']:
+        posi = list(filter(lambda item : hasNegatives(item), posi))
+    # Filter out elements that do not meet the minimum set
+    posi = list(filter(lambda item : scoreSum(item)[0] >= config['minimumScore'], posi))
+    # Sort the elements by the sum of their scores
+    posi.sort(key=lambda item : scoreSum(item), reverse=not config['reverseSorting'])
 
     string1 = '[Best Elements for Element {}, {}]'.format(select, mdv.element(select).name)
     string2 = '\n'.join([formatting(element1, element2) for element1, element2 in posi])

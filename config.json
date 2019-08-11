@@ -121,5 +121,6 @@
     },
     "minimumScore": 1,
     "reverseSorting": false,
+    "noNegatives" : true,
     "fullPrint" : true
 }
