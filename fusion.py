@@ -4,6 +4,9 @@ import os, sys, json, re, mendeleev as mdv
 path = os.path.join(sys.path[0], 'config.json')
 config = json.load(open(path, 'r'))
 
+# Constants
+noElements = '\t{No elements matched the configuration specified}'
+
 # Lambdas
 score = lambda element : config['elements'][str(element)]
 scoreSum = lambda item : ((score(item[0]) + score(item[1])), item)
@@ -48,16 +51,24 @@ def bestSelection(select):
     # Build the strings
     string1 = '[Best Elements for Element {}, {}]'.format(select, mdv.element(select).name if config['fullPrint'] else mdv.element(select.symbol))
     string2 = '\n'.join([formatting(element1, element2) for element1, element2 in posi])
-    return string1, string2 or '\t{No elements matched the configuration specified}'
+    return string1, string2 or noElements
 
 # Driver code
 def main():
     selection = input("Choose elements, delimited by whitespace and/or punctuation...\n")
     selection = [getElement(e) for e in selection.split()]
+    # No one:
+    # No one at all:
+    # Me:
     print('\n\n'.join(
-        sorted(['{}\n{}'.format(*bestSelection(E)) for E in selection],
-        # hacky solution for reverseOrder config option
-        key=lambda string : len([line for line in string.split('\n') if
-        '\t{No elements matched the configuration specified}' not in line]),
-        reverse=not config['reverseOrder'])
+        map(
+            lambda item : '{}\n{}'.format(item[0], item[1]),
+            filter(
+                lambda item : (item[1] != noElements) if config['eliminateEmpty'] else True,
+                sorted([bestSelection(E) for E in selection],
+                # hacky solution for reverseOrder config option
+                key=lambda item : len(item[1]) if item[1] != noElements else 0,
+                reverse=not config['reverseOrder'])
+            )
+        )
     ))

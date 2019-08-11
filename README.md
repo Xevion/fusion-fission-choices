@@ -42,3 +42,7 @@ A set of elements with the score (-1, 5) would get filtered out, while a set wit
 ---
 
 `fullPrint` refers to whether it should print out the Symbol or the Name of the Element
+
+---
+
+`eliminateEmpty` refers to whether the program should remove specified elements if they contained no matching tuples.

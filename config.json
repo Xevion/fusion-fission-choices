@@ -123,5 +123,6 @@
     "reverseInnerOrder": false,
     "reverseOrder" : false,
     "noNegatives" : true,
-    "fullPrint" : true
+    "fullPrint" : true,
+    "eliminateEmpty" : false
 }
