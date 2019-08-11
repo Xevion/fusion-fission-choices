@@ -1,23 +1,21 @@
 import os, sys, json, re, mendeleev as mdv
 
+# Configuration reading
 path = os.path.join(sys.path[0], 'config.json')
 config = json.load(open(path, 'r'))
 
-def score(element):
-    return config['elements'][str(element)]
+# Lambdas
+score = lambda element : config['elements'][str(element)]
+scoreSum = lambda item : ((score(item[0]) + score(item[1])), item)
+hasNegatives = lambda item : score(item[0]) < 0 or score(item[1]) < 0
 
-def scoreSum(item):
-    return (score(item[0]) + score(item[1])), item
-
+# Formatting for a single element report line
 def formatting(e1, e2):
     e1, e2 = mdv.element(e1), mdv.element(e2)
     return '\t[{} {}] + [{} {}]'.format(e1.symbol if not config['fullPrint'] else e1.name,
                                         e1.atomic_number,
                                         e2.symbol if not config['fullPrint'] else e2.name,
                                         e2.atomic_number)
-
-def hasNegatives(item):
-    return score(item[0]) < 0 or score(item[1]) < 0
 
 # get the element based on two letters or a digit and attempt to map it to a number
 def getElement(element):
@@ -58,8 +56,8 @@ def main():
     selection = [getElement(e) for e in selection.split()]
     print('\n\n'.join(
         sorted(['{}\n{}'.format(*bestSelection(E)) for E in selection],
-        key=lambda string : len([line for line in string.split('\n') if
         # hacky solution for reverseOrder config option
+        key=lambda string : len([line for line in string.split('\n') if
         '\t{No elements matched the configuration specified}' not in line]),
         reverse=not config['reverseOrder'])
     ))

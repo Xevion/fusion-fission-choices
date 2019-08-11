@@ -8,6 +8,14 @@
 
 As of now, I have only implemented the fusion part, since it's drastically easier. The fission module for this will come later, if I decide I need it, but since the fission recipes come in JEI automatically... I'll be okay.
 
+## To-do
+
+* Implement Fission
+
+* Better configuration options
+
+* Automatic scoring system
+
 ## Configuration Options
 
 The `elements` portion refers to the scores of each element, each being the atomic number of the element.
