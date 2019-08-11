@@ -28,7 +28,7 @@ The `elements` portion refers to the scores of each element, each being the atom
 
 ---
 
-`reverseIndividualOrder` refers to whether or not the program should reverse the output of the lists so that individual list printouts should have elements with higher scores 
+`reverseIndividualOrder` refers to whether or not the program should reverse the output of the lists so that individual list printouts should have elements with higher scores.
 
 ---
 
@@ -37,14 +37,20 @@ The `elements` portion refers to the scores of each element, each being the atom
 ---
 
 
-`noNegatives` refers to whether it should filter out elements that have a negative score (ie. while using default configs, filter out elements without a score set)
+`noNegatives` refers to whether it should filter out elements that have a negative score (ie. while using default configs, filter out elements without a score set).
 
 A set of elements with the score (-1, 5) would get filtered out, while a set with the scores (78, 12) would not.
 
 ---
 
-`fullPrint` refers to whether it should print out the Symbol or the Name of the Element
+`fullPrint` refers to whether it should print out the Symbol or the Name of the Element.
 
 ---
 
 `eliminateEmpty` refers to whether the program should remove specified elements if they contained no matching tuples.
+
+---
+
+`showScore` refers to whether or not the program shows the score calculated alongside each element.
+
+`showScoreZFill` refers to whether or not to apply applicable ZFill arguments to the score display.

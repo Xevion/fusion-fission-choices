@@ -12,10 +12,19 @@ score = lambda element : config['elements'][str(element)]
 scoreSum = lambda item : ((score(item[0]) + score(item[1])), item)
 hasNegatives = lambda item : score(item[0]) < 0 or score(item[1]) < 0
 
+def getScoreFormat(item):
+    score = str(scoreSum(item)[0])
+    if config['showScoreZFill']:
+        largest = len(str(max(config['elements'].values())))
+        score = score.zfill(largest)
+    return '{{{}}} '.format(score)
+
 # Formatting for a single element report line
 def formatting(e1, e2):
     e1, e2 = mdv.element(e1), mdv.element(e2)
-    return '\t[{} {}] + [{} {}]'.format(e1.symbol if not config['fullPrint'] else e1.name,
+    return '\t{}[{} {}] + [{} {}]'.format(
+                                        getScoreFormat((e1.atomic_number, e2.atomic_number)) if config['showScore'] else '',
+                                        e1.symbol if not config['fullPrint'] else e1.name,
                                         e1.atomic_number,
                                         e2.symbol if not config['fullPrint'] else e2.name,
                                         e2.atomic_number)
