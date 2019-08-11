@@ -39,12 +39,12 @@ def bestSelection(select):
     # Filter out element tuples that don't have both with scores
     if config['noNegatives']:
         posi = list(filter(lambda item : hasNegatives(item), posi))
-    # Filter out elements that do not meet the minimum set
+    # Filter out elements that do not meet the minimum/maximum set
     posi = list(filter(lambda item : scoreSum(item)[0] >= config['minimumScore'], posi))
     # Sort the elements by the sum of their scores
     posi.sort(key=lambda item : scoreSum(item), reverse=not config['reverseSorting'])
 
-    string1 = '[Best Elements for Element {}, {}]'.format(select, mdv.element(select).name)
+    string1 = '[Best Elements for Element {}, {}]'.format(select, mdv.element(select).name if config['fullPrint'] else mdv.element(select.symbol))
     string2 = '\n'.join([formatting(element1, element2) for element1, element2 in posi])
     return string1, string2 or '\t{No elements matched the configuration specified}'
 
