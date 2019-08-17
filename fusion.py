@@ -1,7 +1,7 @@
 import os, sys, json, re, mendeleev as mdv
 
 # Configuration reading
-path = os.path.join(sys.path[0], 'config.json')
+path = os.path.join(sys.path[0], 'custom.json')
 config = json.load(open(path, 'r'))
 
 # Constants
@@ -10,7 +10,8 @@ noElements = '\t{No elements matched the configuration specified}'
 # Lambdas
 score = lambda element : config['elements'][str(element)]
 scoreSum = lambda item : ((score(item[0]) + score(item[1])), item)
-hasNegatives = lambda item : score(item[0]) < 0 or score(item[1]) < 0
+def hasNegatives(item):
+    return score(item[0]) > 0 and score(item[1]) > 0
 
 def getScoreFormat(item):
     score = str(scoreSum(item)[0])
@@ -81,3 +82,6 @@ def main():
             )
         )
     ))
+
+if __name__ == "__main__":
+    main()
